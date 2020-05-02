@@ -5,8 +5,10 @@
  */
 package controller;
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -25,12 +27,19 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @RequestMapping("/agent")
 @SessionAttributes("agent")
 public class AgentController  {
-    
+//     @Autowired
+//     MyUsersService service;
+//     
       @RequestMapping(value = "")
     public String hometest(HttpSession sess, HttpServletRequest request) {
-        if(request.isUserInRole("USER")||request.isUserInRole("ADMIN")){
+          
+        if(request.isUserInRole("USER")){
        
         return "/homepage";
+        }
+        else if (request.isUserInRole("ADMIN"))
+        {
+        return "/view";
         }
         else
         {
@@ -45,6 +54,7 @@ public class AgentController  {
         }
         else
         {
+            System.out.println("Throwing exception in /home ");
          throw new ForbiddenException();
         }
     }

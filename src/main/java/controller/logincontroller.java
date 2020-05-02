@@ -5,13 +5,26 @@
  */
 package controller;
 
+import Model.Users;
+import Model.MyUsersService;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.QueryParam;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
+
 
 /**
  *
@@ -19,19 +32,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/")
+@SessionAttributes("login")
 public class logincontroller {
     
+     @Autowired
+     MyUsersService service;
+    
+    @GetMapping(value="/register")
+    public ModelAndView register()
+    {
+        return new ModelAndView("/register","user",new Users());
+    
+    }
+    @PostMapping(value="/processReg")
+    public String process(@QueryParam("username") String username, @QueryParam("password") String password)
+    {
+        System.out.println("HERE????");
+        String reg=service.RegisterUser(username, password);
+        System.out.println("reg");
+        return "redirect:/login";
+    }
     
     @GetMapping(value="/processlogin")
     public String processLogin(HttpSession sess, HttpServletRequest request)
     {
+       
     if(request.isUserInRole("ADMIN")){
       sess.setAttribute("uname", getLoggedInUserName());
-        System.out.println("HERE");
+       
             return "redirect:/agent/view";
         }
     else if (request.isUserInRole("USER"))
-    {System.out.println("HERE1");
+    {
          sess.setAttribute("uname", getLoggedInUserName());
             return "redirect:/agent/home";
         
@@ -39,6 +71,7 @@ public class logincontroller {
     }
        else
         {
+           
             throw new ForbiddenException();
         }
     }

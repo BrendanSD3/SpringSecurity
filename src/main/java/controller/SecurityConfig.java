@@ -21,6 +21,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -28,16 +29,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-   
+   @Autowired
+   UserDetailsService userDetailsService;
 
-       @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) 
-      throws Exception {
-        auth.inMemoryAuthentication().withUser("bren")
-          .password(passwordEncoder().encode("pass")).roles("USER").and()
-                .withUser("admin")
-          .password(passwordEncoder().encode("pass1")).roles("ADMIN", "USER");
-    }
+   
+   @Autowired
+	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {			 
+	 auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+		
+	}	
+   
+   
+//       @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth) 
+//      throws Exception {
+//        auth.inMemoryAuthentication().withUser("bren")
+//          .password(passwordEncoder().encode("pass")).roles("USER").and()
+//                .withUser("admin")
+//          .password(passwordEncoder().encode("pass1")).roles("ADMIN", "USER");
+//    }
 
 //    @Autowired
 //    private DataSource dataSource;
@@ -70,13 +80,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
        @Override
   protected void configure(HttpSecurity http) throws Exception {
     
-  	http.authorizeRequests().antMatchers("/login").permitAll()
-  			.antMatchers("/", "/*agent*/**").hasAnyRole("ADMIN","USER")
+  	http.authorizeRequests().antMatchers("**/*register**/**","**/*processReg**/**","/login").permitAll()
+                            .antMatchers("/*agent*/**").hasAnyRole("ADMIN","USER")
                          .antMatchers( "/*admin*/**").access("hasRole('ADMIN')").and()
   			.formLogin().permitAll()
-                      .loginProcessingUrl("/processlogin")
-                      .defaultSuccessUrl("/agent/home")
-                     .and().logout().deleteCookies("JSESSIONID");
+                        .loginProcessingUrl("/processlogin")
+                      .and().logout().deleteCookies("JSESSIONID");
        
   } 
     @Bean
