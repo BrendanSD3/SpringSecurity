@@ -6,7 +6,7 @@
 package controller;
 
 import Model.Users;
-import Model.MyUsersService;
+import DAO.MyUsersService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -31,13 +31,19 @@ import org.springframework.web.servlet.ModelAndView;
  * @author brend
  */
 @Controller
-@RequestMapping("/")
+@RequestMapping("")
 @SessionAttributes("login")
 public class logincontroller {
     
      @Autowired
      MyUsersService service;
     
+     @GetMapping(value="/login")
+    public ModelAndView login()
+    {
+        return new ModelAndView("/login","user",new Users());
+    
+    }
     @GetMapping(value="/register")
     public ModelAndView register()
     {

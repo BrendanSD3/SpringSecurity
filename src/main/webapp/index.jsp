@@ -19,17 +19,22 @@
       <a href="/Security/logout">logout</a>
     </security:authorize>
        <security:authorize access="hasRole('ADMIN')">
-            <h1>Some only admin content </h1>
+            <h1>Some admin content </h1>
+            <a href="/Security/agent/viewall">View all brews</a>
+            
             <a href="/Security/agent/view">Admin page</a>
        </security:authorize>
         <security:authorize access="hasRole('USER')">
             <h2>some User specific Content</h2>
             Welcome <security:authentication property="principal.username"/>
+              <a href="/Security/agent/viewall">View all brews</a>
        </security:authorize>
           <security:authorize access="!isAuthenticated()">
-          <a href="/Security/login">Login</a>
-          
-          <a href="/Security/register">Register</a>
+              <h1>Welcome to the Brewery website!</h1>
+              <h2>This website has some security features</h2>
+              <button><a href="/Security/login">Login</a></button>
+              <br><br>
+              <button><a href="/Security/register">Register</a></button>
     </security:authorize>
     </body>
 </html>

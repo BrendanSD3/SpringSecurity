@@ -7,7 +7,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
  
-    <form name="f" action="" method="POST">
+    <form name="f" action="/Security/processlogin" method="POST">
         <table>
                 <tr>
                     <td>Username:</td>
@@ -20,8 +20,13 @@
                 <tr>
                     <td colspan="2">&nbsp;</td>
                 </tr>
+                   <tr>
+                <td>Remember Me:</td>
+                <td><input type="checkbox" name="remember-me" /></td>
+            </tr>
                 <tr>
-                    <td colspan='2'><input name="submit" type="submit">&nbsp;<input name="reset" type="reset"></td>
+                    <td colspan='1'><input name="submit" type="submit"></td>
+                    <td><a href="/Security/register">Register</a></td>
                 </tr>
             </table>
         </form>

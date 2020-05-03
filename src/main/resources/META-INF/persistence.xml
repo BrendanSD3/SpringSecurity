@@ -3,6 +3,12 @@
   <persistence-unit name="taste_PU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>Model.Users</class>
+    <class>Model.Categories</class>
+    <class>Model.Breweries</class>
+    <class>Model.BreweriesGeocode</class>
+    <class>Model.Styles</class>
+    <class>Model.Authorities</class>
+    <class>Model.Beers</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/taste?zeroDateTimeBehavior=convertToNull"/>
